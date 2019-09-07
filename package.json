@@ -11,6 +11,6 @@
   "dependencies": {
     "ejs": "^2.7.1",
     "express": "^4.17.1",
-    "mongoose": "^5.6.12"
+    "spotify-web-api-node": "^4.0.0"
   }
 }
