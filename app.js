@@ -14,9 +14,9 @@ app.set('view engine', 'ejs');
 var spotifyApi = new SpotifyWebApi({
 	scopes: ['user-read-private', 'user-read-email'],
 	redirectUri: 'https://webprojects-rqwyg.run.goorm.io/callback/',
-	clientSecret: 'CLIENT_SECRET',
-	clientId: 'CLIENT_ID',
-	state: "STATE"
+	clientSecret: 'secret',
+	clientId: 'id',
+	state: "rupindern"
 });
 
 
@@ -45,7 +45,8 @@ app.get('/callback', function(req, res) {
 
 app.get('/main', function(req, res) {
 	spotifyApi.getArtistRelatedArtists('7rkW85dBwwrJtlHRDkJDAC').then(function(data) {
-		console.log(data.body.artists);
+		console.log(data.body.artists[0]);
+		res.render('index', {data : data});
 	}, function(err) {
 		done(err);
 	});
