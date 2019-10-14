@@ -51,7 +51,7 @@ async function getRelated(ids) {
 // ROUTES
 // =======
 
-app.get('/home', function(req, res){
+app.get('/', function(req, res){
 	res.render('home');
 })
 
@@ -75,7 +75,7 @@ app.get('/callback', function(req, res) {
 app.get('/main', function(req, res) {
 	
 	const options = {
-	  url: 'https://api.spotify.com/v1/me/top/artists?limit=',
+	  url: 'https://api.spotify.com/v1/me/top/artists?limit=5',
 	  headers: { Authorization: 'Bearer ' + spotifyApi._credentials.accessToken }
 	};
 

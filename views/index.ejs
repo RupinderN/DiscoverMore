@@ -1,13 +1,41 @@
-<% data.items.forEach(function(artists){ %>
-	<img src ="<%= artists.images[0].url %>">
-<% }); %>
+<!doctype html>
+<html lang="en">
+	<head>
+		  <meta charset="utf-8">
+		  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<% console.log(data2.length) %>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+	<link rel="stylesheet" href="../stylesheets/index.css">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 
-<% for(var i = 0; i < data2.length; i++){
-	data2[i].body.artists.forEach(function(artists){
-		if(artists.popularity < 65) {
-			console.log(artists.name);
-		}
-	});
-} %>
+
+	<script
+	  src="https://code.jquery.com/jquery-3.4.1.js"
+	  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+	  crossorigin="anonymous">
+	</script>
+		
+	</head>
+	
+	<body>
+		
+		<% data.items.forEach(function(artists){ %>
+			<img src ="<%= artists.images[0].url %>">
+		<% }); %>
+
+		<% console.log(data2.length) %>
+
+		<% for(var i = 0; i < data2.length; i++){
+			data2[i].body.artists.forEach(function(artists){
+				if(artists.popularity < 65) {
+					console.log(artists.name);
+				}
+			});
+		} %>
+
+	</body>
+	
+</html>
+
