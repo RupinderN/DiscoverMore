@@ -1,3 +1,13 @@
-<% data.body.artists.forEach(function(artists){ %>
-	<img src="<%= artists.images[0].url %>">
+<% data.items.forEach(function(artists){ %>
+	<img src ="<%= artists.images[0].url %>">
 <% }); %>
+
+<% console.log(data2.length) %>
+
+<% for(var i = 0; i < data2.length; i++){
+	data2[i].body.artists.forEach(function(artists){
+		if(artists.popularity < 65) {
+			console.log(artists.name);
+		}
+	});
+} %>
