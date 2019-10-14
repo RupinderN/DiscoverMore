@@ -1,0 +1,17 @@
+body {
+	background-color: #f9e4b7;
+	font-family: 'Montserrat', sans-serif;
+	overflow-x:hidden;
+}
+
+img {
+	float: left;
+	width: 20%;
+}
+
+.options {
+	float: left;
+	width: 20%;
+	margin: 6.66%;
+	height: 325px;
+}

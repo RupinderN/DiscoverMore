@@ -22,18 +22,29 @@
 	<body>
 		
 		<% data.items.forEach(function(artists){ %>
-			<img src ="<%= artists.images[0].url %>">
+			<img class="mb-3" src ="<%= artists.images[0].url %>">
 		<% }); %>
+		
+		<h5 class="text-center text-dark">
+			Here are your recommendations based on your favourite artists.
+		</h5>
 
 		<% console.log(data2.length) %>
+		
 
-		<% for(var i = 0; i < data2.length; i++){
-			data2[i].body.artists.forEach(function(artists){
-				if(artists.popularity < 65) {
-					console.log(artists.name);
-				}
-			});
-		} %>
+		<% for(var i = 0; i < data2.length; i++){ %>
+			<% data2[i].body.artists.forEach(function(artists){ %>
+				<% if(artists.popularity < 65) { %>
+
+					<div class="text-center">
+						<img class="mb-4 options" src ="<%= artists.images[0].url %>">
+					</div>
+
+					<% console.log(artists.images) %>
+
+				<% } %>
+			<% }); %>
+		<% } %>
 
 	</body>
 	
