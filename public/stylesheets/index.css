@@ -4,14 +4,12 @@ body {
 	overflow-x:hidden;
 }
 
-img {
+.artist {
 	float: left;
 	width: 20%;
 }
 
 .options {
-	float: left;
-	width: 20%;
-	margin: 6.66%;
-	height: 325px;
+	width: 20rem;
+	height: 300px;
 }
