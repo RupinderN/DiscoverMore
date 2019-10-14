@@ -1,6 +1,7 @@
 body {
 	background-color: #f9e4b7;
 	font-family: 'Montserrat', sans-serif;
+	overflow-x:hidden;
 }
 
 img {
@@ -12,5 +13,10 @@ button {
 	background-color: #1db954 !important;
 	font-size: 10px !important;
 	height: 5% !important;
-	width: 10% !important;
+	width: 20% !important;
+}
+
+h4 {
+	float: right;
+	margin-top: 40px;
 }

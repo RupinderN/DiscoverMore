@@ -8,6 +8,7 @@ const express = require('express'),
 	  SpotifyWebApi = require("spotify-web-api-node");
 
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + "/public"));
 
 // ==============
 // CONFIGURATION
@@ -50,6 +51,9 @@ async function getRelated(ids) {
 // ROUTES
 // =======
 
+app.get('/home', function(req, res){
+	res.render('home');
+})
 
 app.get('/login', function(req, res){
 	res.redirect(authorizeURL);
