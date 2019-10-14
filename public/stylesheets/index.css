@@ -13,3 +13,8 @@ body {
 	width: 20rem;
 	height: 300px;
 }
+
+.card {
+	background: none;
+	border: none;
+}
