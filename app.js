@@ -5,16 +5,20 @@ const express = require('express'),
 	  app = express(),
 	  http = require("http"),
 	  request = require('request'),
-	  SpotifyWebApi = require("spotify-web-api-node");
+	  methodOverride = require('method-override'),
+	  SpotifyWebApi = require("spotify-web-api-node"),
+	  bodyParser = require("body-parser");
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + "/public"));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 
 // ==============
 // CONFIGURATION
 // ==============
 var spotifyApi = new SpotifyWebApi({
-	scopes: ['user-read-private', 'user-read-email', 'user-top-read'],
+	scopes: ['user-read-private', 'user-read-email', 'user-top-read' , 'user-follow-modify'],
 	redirectUri: 'https://webprojects-rqwyg.run.goorm.io/callback/',
 	clientSecret: 'secret',
 	clientId: 'id',
@@ -73,29 +77,62 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/main', function(req, res) {
+	spotifyApi.getMe().then(function(data) {
+		const options = {
+		  url: 'https://api.spotify.com/v1/me/top/artists?limit=5',
+		  headers: { Authorization: 'Bearer ' + spotifyApi._credentials.accessToken }
+		};
+
+		async function callback(error, response, body) {
+			if (!error && response.statusCode == 200) {
+				var data = JSON.parse(body);
+				var ids = [];
+
+				data.items.forEach(function(artists) {
+					ids.push(artists.id);
+				});
+
+				let data2 = await getRelated(ids);
+
+				res.render('index', { data : data, data2 : data2 });
+			}
+		}
+
+		request(options, callback);		
+	}, function(err) {
+		res.redirect("/login")
+	});
+});
+
+
+app.put('https://api.spotify.com/v1/me/following?:id', function(req, res) {
+	
+	console.log(req.body.artistId);
 	
 	const options = {
-	  url: 'https://api.spotify.com/v1/me/top/artists?limit=5',
+	  url: 'https://api.spotify.com/v1/me/following?' + req.body.artistId,
 	  headers: { Authorization: 'Bearer ' + spotifyApi._credentials.accessToken }
 	};
 
-	async function callback(error, response, body) {
+	function callback(error, response, body) {
 		if (!error && response.statusCode == 200) {
-			var data = JSON.parse(body);
-			var ids = [];
-			
-			data.items.forEach(function(artists) {
-				ids.push(artists.id);
-			});
-			
-			let data2 = await getRelated(ids);
-			
-			res.render('index', { data : data, data2 : data2 });
+			console.log("Followed!");
+			res.redirect('/main');
+		} else {
+			console.log(error);
 		}
 	}
 
 	request(options, callback);
 	
+});
+
+app.get('/info', function(req, res){
+	res.render('info');
+});
+
+app.get('/:id', function(req, res){
+	res.render('error');
 });
 
 
