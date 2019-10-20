@@ -37,25 +37,25 @@
 				<% if(artists.popularity < 65) { %>
 						<div class="col-lg-4">
 							<div class="card align-items-center">
-								<img class="mt-4 mb-3 options card-img-top" src ="<%= artists.images[0].url %>">
+								<img class="mt-5 mb-2 options card-img-top" src ="<%= artists.images[0].url %>">
 								<h4 class="card-body">
 									<div class="float-left">
-									<button type="button" class="btn btn-success rounded-pill font-weight-bold">
+									<!-- <button type="button" class="btn btn-success rounded-pill font-weight-bold">
 										<i class="fas fa-play"></i>
-									</button>
+									</button> -->
 									</div>
-									<span class="mx-5"><%= artists.name %></span>
+									<span class="mx-4"><%= artists.name %></span>
 									<div class="float-right">
-										<button type="button" class="btn btn-success rounded-pill font-weight-bold float-right">
-											<i class="fas fa-user-plus"></i>
-										</button>
+										<form action="/main" method="POST">
+											<input type="text" name="artistId" value="<%= artists.id %>" class="d-none">
+											<button type="submit" class="btn btn-success rounded-pill font-weight-bold float-right">
+												<i class="fas fa-user-plus"></i>
+											</button>
+										</form>
 									</div>
 								</h4>
 							</div>
-						</div>
-		
-					<% console.log(artists.images) %>
-		
+						</div>		
 				<% } %>
 			<% }); %>
 		<% } %>

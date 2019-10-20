@@ -98,34 +98,37 @@ app.get('/main', function(req, res) {
 			}
 		}
 
-		request(options, callback);		
+		request(options, callback);
 	}, function(err) {
 		res.redirect("/login")
 	});
 });
 
-
-app.put('https://api.spotify.com/v1/me/following?:id', function(req, res) {
+app.post("/main", function(req, res) {
 	
-	console.log(req.body.artistId);
-	
-	const options = {
-	  url: 'https://api.spotify.com/v1/me/following?' + req.body.artistId,
-	  headers: { Authorization: 'Bearer ' + spotifyApi._credentials.accessToken }
+	var options = {
+		url: 'https://api.spotify.com/v1/me/following?type=artist&ids=' + req.body.artistId,
+		headers: {
+		'Content-Type': 'application/json',
+		'Accept': 'application/json',
+		'Authorization': 'Bearer ' + spotifyApi._credentials.accessToken
+		},
 	};
 
 	function callback(error, response, body) {
 		if (!error && response.statusCode == 200) {
-			console.log("Followed!");
-			res.redirect('/main');
+			console.log(body);
 		} else {
-			console.log(error);
+			console.log(error, response.statusCode);
 		}
 	}
 
-	request(options, callback);
+	request.put(options, callback);
 	
+	res.redirect('/main');
+
 });
+
 
 app.get('/info', function(req, res){
 	res.render('info');
