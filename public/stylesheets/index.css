@@ -7,7 +7,7 @@ body {
 .artist {
 	float: left;
 	width: 20%;
-	height: 20%;
+	max-height: 300px;
 }
 
 .options {

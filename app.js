@@ -100,7 +100,7 @@ app.get('/main', function(req, res) {
 
 		request(options, callback);
 	}, function(err) {
-		res.redirect("/login")
+		res.redirect("/login");
 	});
 });
 
