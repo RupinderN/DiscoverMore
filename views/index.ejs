@@ -20,29 +20,62 @@
 	</head>
 	
 	<body>
-	
+		
+		<% var array = []; %>
+		<% for(var i = 0; i < data2.length; i++){ %>
+			<% data2[i].body.artists.forEach(function(artists){ %>
+				<% if(artists.popularity < 65) { %>
+					<% array.push(artists.name) %>
+				<% } %>
+			<% }); %>
+		<% } %>
+		
+		<% var uniq = array
+			  .map((array) => {
+				return {
+				  count: 1,
+				  array: array
+				}
+			  })
+			  .reduce((a, b) => {
+				a[b.array] = (a[b.array] || 0) + b.count
+				return a
+			  }, {})
+
+			var duplicates = Object.keys(uniq).filter((a) => uniq[a] > 1) %>
+		
+		<% var repeated = [];
+		
+		for(var i = 0; i < duplicates.length; i++) {
+			repeated[i] = 0;
+		} %>
+		
 		<div>
 			<% data.items.forEach(function(artists){ %>
 			<img class="mb-3 artist" src ="<%= artists.images[0].url %>">
-			<% }); %>		
+			<% }); %>
 		</div>
+	
 		
 		<div class="text-center text-dark mb-5">
-				Here are your recommendations based on your favourite artists.
+				<strong><em>Below are your undiscovered artists based on your favourite ones above.</em></strong>
+		</div>
+		<div class="text-center text-dark mb-5">
+			<strong><em>Click the buttons to begin following these artists on Spotify! To unfollow, you must do this through Spotify itself.</em></strong>
 		</div>
 		
 	<div class="row">
 		<% for(var i = 0; i < data2.length; i++){ %>
 			<% data2[i].body.artists.forEach(function(artists){ %>
-				<% if(artists.popularity < 65) { %>
+				<% if(duplicates.includes(artists.name)) { %>
+				<%	repeated[duplicates.indexOf(artists.name)] += 1; %>
+				<% } %>
+				<% if(artists.popularity < 65 && !(repeated[duplicates.indexOf(artists.name)] == 2)) { %>
 						<div class="col-lg-4">
 							<div class="card align-items-center">
 								<img class="mt-5 mb-2 options card-img-top" src ="<%= artists.images[0].url %>">
 								<h4 class="card-body">
 									<div class="float-left">
-									<!-- <button type="button" class="btn btn-success rounded-pill font-weight-bold">
-										<i class="fas fa-play"></i>
-									</button> -->
 									</div>
 									<span class="mx-4"><%= artists.name %></span>
 									<div class="float-right">
@@ -60,6 +93,13 @@
 			<% }); %>
 		<% } %>
 	</div>
+		
+	<div class="text-center text-dark mb-5">
+		<a href='https://github.com/RupinderN/DiscoverMore'><i class="fab fa-github-square fa-5x ml-4 mt-3"></i></a>
+		<a href='https://www.linkedin.com/in/rupindernagra/'><i class="fab fa-linkedin ml-3 fa-5x mt-3"></i></a>
+		<a href='/info'><i class="fas fa-info-circle ml-3 fa-3x"></i></a>
+	</div>	
+	
 	</body>
 	
 </html>
