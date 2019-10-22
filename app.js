@@ -125,7 +125,7 @@ app.post("/main", function(req, res) {
 
 	request.put(options, callback);
 	
-	res.redirect('/main');
+	res.status(204).send();
 
 });
 
