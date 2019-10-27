@@ -16,10 +16,21 @@
 	  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
 	  crossorigin="anonymous">
 	</script>
+		
+	<script>
+		function reloadThePage() {
+			window.location.reload();
+		} 
+	</script>
 	
 	</head>
 	
 	<body>
+		
+		<% var following = []; %>
+		<% dataFollowing[0].forEach(function(artists) {
+			following.push(artists.name);
+		}); %>		
 		
 		<% var array = []; %>
 		<% for(var i = 0; i < data2.length; i++){ %>
@@ -31,18 +42,17 @@
 		<% } %>
 		
 		<% var uniq = array
-			  .map((array) => {
+			.map((array) => {
 				return {
-				  count: 1,
-				  array: array
+					count: 1,
+					array: array
 				}
-			  })
-			  .reduce((a, b) => {
+			}).reduce((a, b) => {
 				a[b.array] = (a[b.array] || 0) + b.count
 				return a
-			  }, {})
-
-			var duplicates = Object.keys(uniq).filter((a) => uniq[a] > 1) %>
+			}, {})
+		
+		var duplicates = Object.keys(uniq).filter((a) => uniq[a] > 1) %>
 		
 		<% var repeated = [];
 		
@@ -61,7 +71,7 @@
 				<strong><em>Below are your undiscovered artists based on your favourite ones above.</em></strong>
 		</div>
 		<div class="text-center text-dark mb-5">
-			<strong><em>Click the buttons to begin following these artists on Spotify! To unfollow, you must do this through Spotify itself.</em></strong>
+			<strong><em>Click the buttons to begin following (or unfollowing if you've already followed) these artists on Spotify!</em></strong>
 		</div>
 		
 	<div class="row">
@@ -79,12 +89,21 @@
 									</div>
 									<span class="mx-4"><%= artists.name %></span>
 									<div class="float-right">
-										<form action="/main" method="POST">
-											<input type="text" name="artistId" value="<%= artists.id %>" class="d-none">
-											<button type="submit" class="btn btn-success rounded-pill font-weight-bold float-right">
-												<i class="fas fa-user-plus"></i>
-											</button>
-										</form>
+										<% if(!(following.includes(artists.name))) { %>
+											<form action="/main" method="POST">
+												<input type="text" name="artistId" value="<%= artists.id + "P" %>" class="d-none" onClick="reloadThePage()">
+												<button type="submit" class="btn btn-success rounded-pill font-weight-bold float-right">
+													<i class="fas fa-user-plus"></i>
+												</button>
+											</form>
+										<% } else { %>
+											<form action="/main" method="POST">
+												<input type="text" name="artistId" value="<%= artists.id + "D" %>" class="d-none" onClick="reloadThePage()">
+												<button type="submit" class="btn btn-danger rounded-pill font-weight-bold float-right">
+													<i class="fas fa-user-minus"></i>
+												</button>
+											</form>
+										<% } %>
 									</div>
 								</h4>
 							</div>
