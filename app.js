@@ -18,7 +18,7 @@ app.use(methodOverride("_method"));
 // CONFIGURATION
 // ==============
 var spotifyApi = new SpotifyWebApi({
-	scopes: ['user-read-private', 'user-read-email', 'user-top-read' , 'user-follow-modify'],
+	scopes: ['user-read-private', 'user-read-email', 'user-top-read' , 'user-follow-modify', 'user-follow-read'],
 	redirectUri: 'https://webprojects-rqwyg.run.goorm.io/callback/',
 	clientSecret: 'secret',
 	clientId: 'id',
@@ -48,7 +48,40 @@ async function getRelated(ids) {
 	await Promise.all(promiseArray).then(result => {
 		// console.log(result);
 	})
+	
     return Promise.all(promiseArray);
+}
+
+
+async function getFollowing() {
+	
+	
+	var options = {
+		url: 'https://api.spotify.com/v1/me/following?type=artist',
+		headers: {
+		'Content-Type': 'application/json',
+		'Accept': 'application/json',
+		'Authorization': 'Bearer ' + spotifyApi._credentials.accessToken
+		},
+	};
+	
+	var followingList = [];
+	
+	
+	followingList.push(new Promise((resolve, reject) => {
+		request(options, function (error, response, body) {
+			if (!error && response.statusCode == 200) {
+				data = JSON.parse(body);
+				resolve(data.artists.items);
+			} else {
+				console.log(error, response.statusCode);
+			}
+		});
+	}));
+	
+    await Promise.all(followingList);
+    return Promise.all(followingList);
+	
 }
 
 // =======
@@ -93,8 +126,10 @@ app.get('/main', function(req, res) {
 				});
 
 				let data2 = await getRelated(ids);
+				
+				let dataFollowing = await getFollowing();
 
-				res.render('index', { data : data, data2 : data2 });
+				res.render('index', { data : data, data2 : data2, dataFollowing: dataFollowing });
 			}
 		}
 
@@ -106,26 +141,54 @@ app.get('/main', function(req, res) {
 
 app.post("/main", function(req, res) {
 	
-	var options = {
-		url: 'https://api.spotify.com/v1/me/following?type=artist&ids=' + req.body.artistId,
-		headers: {
-		'Content-Type': 'application/json',
-		'Accept': 'application/json',
-		'Authorization': 'Bearer ' + spotifyApi._credentials.accessToken
-		},
-	};
-
-	function callback(error, response, body) {
-		if (!error && response.statusCode == 200) {
-			console.log(body);
-		} else {
-			console.log(error, response.statusCode);
-		}
-	}
-
-	request.put(options, callback);
+	var artist = req.body.artistId.slice(0, req.body.artistId.length - 1);
+	var type = req.body.artistId.slice(req.body.artistId.length - 1);
 	
-	res.status(204).send();
+	if(type == "P") {
+	
+		var options = {
+			url: 'https://api.spotify.com/v1/me/following?type=artist&ids=' + artist,
+			headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + spotifyApi._credentials.accessToken
+			},
+		};
+
+		function callback(error, response, body) {
+			if (!error && response.statusCode == 200) {
+				console.log(body);
+			} else {
+				console.log(error, response.statusCode);
+			}
+		}
+
+		request.put(options, callback);
+		
+	} else {
+		
+		var options = {
+			url: 'https://api.spotify.com/v1/me/following?type=artist&ids=' + artist,
+			headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + spotifyApi._credentials.accessToken
+			},
+		};
+
+		function callback(error, response, body) {
+			if (!error && response.statusCode == 200) {
+				console.log(body);
+			} else {
+				console.log(error, response.statusCode);
+			}
+		}
+
+		request.delete(options, callback);
+		
+	}
+	
+	res.redirect('/main');
 
 });
 
@@ -137,6 +200,7 @@ app.get('/info', function(req, res){
 app.get('/:id', function(req, res){
 	res.render('error');
 });
+
 
 
 app.listen(3000, (req, res) => {
