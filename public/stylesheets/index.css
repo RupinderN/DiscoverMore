@@ -7,7 +7,7 @@ body {
 .artist {
 	float: left;
 	width: 20%;
-	max-height: 300px;
+	max-height: 350px;
 }
 
 .options {
@@ -28,3 +28,13 @@ a {
 a:hover {
 	color: #212529;
 }
+
+.form-control {
+	width: 5%;
+	display: block;
+	margin: 0 auto;
+}
+
+.spotify:hover {
+color: #fff !important;
+text-decoration: none;}
