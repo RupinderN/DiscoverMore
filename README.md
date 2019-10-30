@@ -10,11 +10,11 @@ The Spotify API is an extremely well-written and versatile API rich with differe
 
 # Project Screenshots
 
-![Home Page](https://github.com/RupinderN/DiscoverMore/public/assets/home.PNG)
+![Home Page](https://github.com/RupinderN/DiscoverMore/blob/master/public/assets/home.PNG)
 
-![Main Page Top](https://github.com/RupinderN/DiscoverMore/public/assets/main1.PNG)
+![Main Page Top](https://github.com/RupinderN/DiscoverMore/blob/master/public/assets/main1.PNG)
 
-![Main Page Continued](https://github.com/RupinderN/DiscoverMore/public/assets/main1.PNG)
+![Main Page Continued](https://github.com/RupinderN/DiscoverMore/blob/master/public/assets/main2.PNG)
 
 
 # Installation and Setup Instructions
