@@ -1,6 +1,8 @@
 // ==============
 // REQUIRE ROUTES
 // ==============
+
+
 const express = require('express'),
 	  app = express(),
 	  http = require("http"),
@@ -14,9 +16,14 @@ app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 
+
+
 // ==============
 // CONFIGURATION
 // ==============
+
+
+
 var spotifyApi = new SpotifyWebApi({
 	scopes: ['user-read-private', 'user-read-email', 'user-top-read' , 'user-follow-modify', 'user-follow-read'],
 	redirectUri: 'https://webprojects-rqwyg.run.goorm.io/callback/',
@@ -26,9 +33,15 @@ var spotifyApi = new SpotifyWebApi({
 });
 
 
-
 // Create the authorization URL
 var authorizeURL = spotifyApi.createAuthorizeURL(spotifyApi._credentials.scopes, spotifyApi._credentials.state);
+
+
+
+// ==========
+// FUNCTIONS 
+// ==========
+
 
 async function getRelated(ids) {
 	
@@ -84,9 +97,13 @@ async function getFollowing() {
 	
 }
 
+
+
 // =======
 // ROUTES
 // =======
+
+
 
 app.get('/', function(req, res){
 	res.render('home');
@@ -125,11 +142,11 @@ app.get('/main', function(req, res) {
 					ids.push(artists.id);
 				});
 
-				let data2 = await getRelated(ids);
+				let artistsRelated = await getRelated(ids);
 				
 				let dataFollowing = await getFollowing();
 
-				res.render('index', { data : data, data2 : data2, dataFollowing: dataFollowing });
+				res.render('index', { artistsFavourite : data, artistsRelated : artistsRelated, dataFollowing: dataFollowing });
 			}
 		}
 
@@ -193,16 +210,24 @@ app.post("/main", function(req, res) {
 });
 
 
+
 app.get('/info', function(req, res){
 	res.render('info');
 });
+
 
 app.get('/:id', function(req, res){
 	res.render('error');
 });
 
 
+// ==============
+// SERVER STARTUP
+// ==============
+
+
 
 app.listen(3000, (req, res) => {
 	console.log("Server has started!");
 });
+

@@ -6,40 +6,44 @@
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		
+		
+	<!-- Stylesheets & Fonts	 -->
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
 	<link rel="stylesheet" href="../stylesheets/index.css">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
-
+		
+	<!-- jQuery	 -->
 
 	<script
-	  src="https://code.jquery.com/jquery-3.4.1.js"
-	  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-	  crossorigin="anonymous">
-	</script>
+		src="https://code.jquery.com/jquery-3.4.1.js"
+		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+		crossorigin="anonymous">
+	</script>		
 		
-	<script>
-		function reloadThePage() {
-			window.location.reload();
-		} 
-	</script>
-	
 	</head>
 	
 	<body>
+				
+		<!-- Get Followed Artists in Array	 -->
 		
 		<% var following = []; %>
 		<% dataFollowing[0].forEach(function(artists) {
 			following.push(artists.name);
-		}); %>		
+		}); %>
+		
+		
+		<!-- Get All Related Artists in Array	 -->
 		
 		<% var array = []; %>
-		<% for(var i = 0; i < data2.length; i++){ %>
-			<% data2[i].body.artists.forEach(function(artists){ %>
-				<% if(artists.popularity < 65) { %>
-					<% array.push(artists.name) %>
-				<% } %>
+		<% for(var i = 0; i < artistsRelated.length; i++){ %>
+			<% artistsRelated[i].body.artists.forEach(function(artists){ %>
+				<% array.push(artists.name) %>
 			<% }); %>
 		<% } %>
+		
+		
+		<!-- Determine Repeated Artists in Related Artists Array	 -->
 		
 		<% var uniq = array
 			.map((array) => {
@@ -60,65 +64,87 @@
 			repeated[i] = 0;
 		} %>
 		
+		
+		<!-- Display Favourite Artists Images	 -->
+		
 		<div>
-			<% data.items.forEach(function(artists){ %>
-			<img class="mb-3 artist" src ="<%= artists.images[0].url %>">
+			<% artistsFavourite.items.forEach(function(artists){ %>
+				<img class="mb-3 artist" src ="<%= artists.images[0].url %>">
+				<% duplicates.push(artists.name) %>
 			<% }); %>
 		</div>
 	
+		<!-- Page Message	 -->
 		
-		<div class="text-center text-dark mb-5">
+		<div class="text-center text-dark mb-5 mx-5">
 				<strong><em>Below are your undiscovered artists based on your favourite ones above.</em></strong>
 		</div>
-		<div class="text-center text-dark mb-5">
-			<strong><em>Click the buttons to begin following (or unfollowing if you've already followed) these artists on Spotify!</em></strong>
+		<div class="text-center text-dark mb-5 mx-3">
+			<strong><em>Click the artist image to go to their Spotify page, view their Spotify popularity to the left of their name, or click the follow button to the right to begin following (or unfollowing if you've already followed) these artists on Spotify!</em></strong>
 		</div>
 		
-	<div class="row">
-		<% for(var i = 0; i < data2.length; i++){ %>
-			<% data2[i].body.artists.forEach(function(artists){ %>
-				<% if(duplicates.includes(artists.name)) { %>
-				<%	repeated[duplicates.indexOf(artists.name)] += 1; %>
-				<% } %>
-				<% if(artists.popularity < 65 && !(repeated[duplicates.indexOf(artists.name)] == 2)) { %>
-						<div class="col-lg-4">
-							<div class="card align-items-center">
-								<img class="mt-5 mb-2 options card-img-top" src ="<%= artists.images[0].url %>">
-								<h4 class="card-body">
-									<div class="float-left">
-									</div>
-									<span class="mx-4"><%= artists.name %></span>
-									<div class="float-right">
-										<% if(!(following.includes(artists.name))) { %>
-											<form action="/main" method="POST">
-												<input type="text" name="artistId" value="<%= artists.id + "P" %>" class="d-none" onClick="reloadThePage()">
-												<button type="submit" class="btn btn-success rounded-pill font-weight-bold float-right">
-													<i class="fas fa-user-plus"></i>
-												</button>
-											</form>
-										<% } else { %>
-											<form action="/main" method="POST">
-												<input type="text" name="artistId" value="<%= artists.id + "D" %>" class="d-none" onClick="reloadThePage()">
-												<button type="submit" class="btn btn-danger rounded-pill font-weight-bold float-right">
-													<i class="fas fa-user-minus"></i>
-												</button>
-											</form>
-										<% } %>
-									</div>
-								</h4>
-							</div>
-						</div>		
-				<% } %>
-			<% }); %>
-		<% } %>
-	</div>
+
+		<!-- Related Artists Functionality	 -->
 		
-	<div class="text-center text-dark mb-5">
-		<a href='https://github.com/RupinderN/DiscoverMore'><i class="fab fa-github-square fa-5x ml-4 mt-3"></i></a>
-		<a href='https://www.linkedin.com/in/rupindernagra/'><i class="fab fa-linkedin ml-3 fa-5x mt-3"></i></a>
-		<a href='/info'><i class="fas fa-info-circle ml-3 fa-3x"></i></a>
-	</div>	
+		<div class="row">
+			<% for(var i = 0; i < artistsRelated.length; i++){ %>
+				<% artistsRelated[i].body.artists.forEach(function(artists){ %>
+					
+					<!-- If Artists Name is in Duplicate List, Increment repeated variable	 -->
+			
+					<% if(duplicates.includes(artists.name)) { %>
+						<%	repeated[duplicates.indexOf(artists.name)] += 1; %>
+					<% } %>
+			
+					<!-- Display Related Artists -->
+								
+					<% if(artists.popularity < 100 && !(repeated[duplicates.indexOf(artists.name)] == 2)) { %>
+							<div class="col-lg-4">
+								<div class="card align-items-center">
+									<a href='<%= artists.external_urls.spotify %>' target="_blank">
+										<img class="mt-5 mb-2 options card-img-top" src ="<%= artists.images[0].url %>">
+									</a>
+									<h4 class="card-body">
+										<div class="float-left">
+											<button type="button" class="btn btn-danger rounded-pill font-weight-bold float-right">
+												<%= artists.popularity %>
+											</button>
+										</div>
+										<span class="mx-4"><%= artists.name %></span>
+										<div class="float-right">
+											<% if(!(following.includes(artists.name))) { %>
+												<form action="/main" method="POST">
+													<input type="text" name="artistId" value="<%= artists.id + "P" %>" class="d-none" onClick="reloadThePage()">
+													<button type="submit" class="btn btn-success rounded-pill font-weight-bold float-right">
+														<i class="fas fa-user-plus"></i>
+													</button>
+												</form>
+											<% } else { %>
+												<form action="/main" method="POST">
+													<input type="text" name="artistId" value="<%= artists.id + "D" %>" class="d-none" onClick="reloadThePage()">
+													<button type="submit" class="btn btn-danger rounded-pill font-weight-bold float-right">
+														<i class="fas fa-user-minus"></i>
+													</button>
+												</form>
+											<% } %>
+										</div>
+									</h4>
+								</div>
+							</div>		
+					<% } %>
+				<% }); %>
+			<% } %>
+		</div>
+		
+		<!-- Links	 -->
+
+		<div class="text-center text-dark mb-5">
+			<a href='https://github.com/RupinderN/DiscoverMore' target="_blank"><i class="fab fa-github-square fa-5x ml-4 mt-3"></i></a>
+			<a href='https://www.linkedin.com/in/rupindernagra/' target="_blank"><i class="fab fa-linkedin ml-3 fa-5x mt-3"></i></a>
+			<a href='/info'><i class="fas fa-info-circle ml-3 fa-3x"></i></a>
+		</div>
 	
+		
 	</body>
 	
 </html>
