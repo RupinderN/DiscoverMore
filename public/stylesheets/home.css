@@ -5,15 +5,15 @@ body {
 }
 
 img {
-	height: 500px;
-	width: 500px;
+	height: 70%;
+	width: 60%;
 }
 
 button {
 	background-color: #1db954 !important;
 	font-size: 10px !important;
 	height: 5% !important;
-	width: 20% !important;
+	width: 25% !important;
 	transition: 0.3s !important;
 }
 
