@@ -26,12 +26,13 @@ app.use(methodOverride("_method"));
 
 var spotifyApi = new SpotifyWebApi({
 	scopes: ['user-read-private', 'user-read-email', 'user-top-read' , 'user-follow-modify', 'user-follow-read'],
-	redirectUri: process.env.URI,
+	redirectUri: 'https://webprojects-rqwyg.run.goorm.io/callback/',
 	clientSecret: process.env.SECRET,
 	clientId: process.env.ID,
 	state: process.env.STATE
 });
 
+console.log(process.env.URI);
 
 // Create the authorization URL
 var authorizeURL = spotifyApi.createAuthorizeURL(spotifyApi._credentials.scopes, spotifyApi._credentials.state);
