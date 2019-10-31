@@ -1,10 +1,11 @@
 {
   "name": "spotifyapp",
   "version": "1.0.0",
-  "description": "",
+  "description": "View the project [here](https://github.com/RupinderN/DiscoverMore)!",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	  "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +16,15 @@
     "method-override": "^3.0.0",
     "request": "^2.88.0",
     "spotify-web-api-node": "^4.0.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RupinderN/discover-more.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/RupinderN/discover-more/issues"
+  },
+  "homepage": "https://github.com/RupinderN/discover-more#readme"
 }
