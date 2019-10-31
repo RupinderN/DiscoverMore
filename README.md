@@ -1,6 +1,6 @@
 # Discover More
 
-View the project [here](https://github.com/RupinderN/DiscoverMore)!
+View the project [here](https://discover-more.herokuapp.com/)!
 
 This web application displays artist recommendations based on the artists you've listened to the most on Spotify in the past 6 months. It then gives you the ability to follow or unfollow the artists on Spotify, view their popularity alongside other artists, and also links you to their Spotify pages.
 
