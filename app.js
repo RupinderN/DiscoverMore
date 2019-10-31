@@ -226,8 +226,9 @@ app.get('/:id', function(req, res){
 // ==============
 
 
+var port = process.env.PORT || 3000;
 
-app.listen(process.env.PORT || 3000, (req, res) => {
+app.listen(port, (req, res) => {
 	console.log("Server has started!");
 });
 
