@@ -26,9 +26,9 @@ app.use(methodOverride("_method"));
 
 var spotifyApi = new SpotifyWebApi({
 	scopes: ['user-read-private', 'user-read-email', 'user-top-read' , 'user-follow-modify', 'user-follow-read'],
-	redirectUri: 'https://webprojects-rqwyg.run.goorm.io/callback/',
-	clientSecret: 'secret',
-	clientId: 'id',
+	redirectUri: process.env.URI,
+	clientSecret: process.env.SECRET,
+	clientId: process.env.ID,
 	state: "rupindern"
 });
 
