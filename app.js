@@ -29,7 +29,7 @@ var spotifyApi = new SpotifyWebApi({
 	redirectUri: process.env.URI,
 	clientSecret: process.env.SECRET,
 	clientId: process.env.ID,
-	state: "rupindern"
+	state: process.env.STATE
 });
 
 
