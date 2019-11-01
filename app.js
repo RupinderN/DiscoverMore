@@ -1,3 +1,4 @@
+
 // ==============
 // REQUIRE ROUTES
 // ==============
@@ -11,6 +12,7 @@ const express = require('express'),
 	  SpotifyWebApi = require("spotify-web-api-node"),
 	  bodyParser = require("body-parser");
 
+// ENVIRONMENT VARIABLE CONFIGURATION
 require('dotenv').config();
 
 app.set('view engine', 'ejs');
@@ -20,9 +22,9 @@ app.use(methodOverride("_method"));
 
 
 
-// ==============
-// CONFIGURATION
-// ==============
+// ============================
+// SPOTIFY TOKEN CONFIGURATION
+// ============================
 
 
 var spotifyApi = new SpotifyWebApi({
@@ -43,7 +45,7 @@ var authorizeURL = spotifyApi.createAuthorizeURL(spotifyApi._credentials.scopes,
 // FUNCTIONS 
 // ==========
 
-
+// GET RELATED ARTISTS
 async function getRelated(ids) {
 	
 	var promiseArray = [];
@@ -67,6 +69,7 @@ async function getRelated(ids) {
 }
 
 
+// GET USER'S FOLLOWED ARTISTS
 async function getFollowing() {
 	
 	
@@ -114,11 +117,11 @@ app.get('/login', function(req, res){
 	res.redirect(authorizeURL);
 });
 
+// REDIRECT URI ROUTE
 app.get('/callback', function(req, res) {
 	var code = req.query.code;
 	
 	spotifyApi.authorizationCodeGrant(code).then(function(data) {
-		// Set the access token on the API object to use it in later calls
 		spotifyApi.setAccessToken(data.body['access_token']);
 		spotifyApi.setRefreshToken(data.body['refresh_token']);
 		res.redirect('/main');
@@ -130,6 +133,7 @@ app.get('/callback', function(req, res) {
 app.get('/main', function(req, res) {
 	spotifyApi.getMe().then(function(data) {
 		const options = {
+		// Get User's 5 Favourite Artists
 		  url: 'https://api.spotify.com/v1/me/top/artists?limit=5',
 		  headers: { Authorization: 'Bearer ' + spotifyApi._credentials.accessToken }
 		};
@@ -139,6 +143,7 @@ app.get('/main', function(req, res) {
 				var data = JSON.parse(body);
 				var ids = [];
 
+				// Get Related Artists for each artists in Favourites
 				data.items.forEach(function(artists) {
 					ids.push(artists.id);
 				});
@@ -162,6 +167,7 @@ app.post("/main", function(req, res) {
 	var artist = req.body.artistId.slice(0, req.body.artistId.length - 1);
 	var type = req.body.artistId.slice(req.body.artistId.length - 1);
 	
+	// If last character of artist of artistId is "P", use put request and follow artist
 	if(type == "P") {
 	
 		var options = {
@@ -183,6 +189,7 @@ app.post("/main", function(req, res) {
 
 		request.put(options, callback);
 		
+	// If last character of artist of artistId is "D", use delete request and unfollow artist
 	} else {
 		
 		var options = {
