@@ -11,6 +11,8 @@ const express = require('express'),
 	  SpotifyWebApi = require("spotify-web-api-node"),
 	  bodyParser = require("body-parser");
 
+require('dotenv').config();
+
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -23,16 +25,14 @@ app.use(methodOverride("_method"));
 // ==============
 
 
-
 var spotifyApi = new SpotifyWebApi({
 	scopes: ['user-read-private', 'user-read-email', 'user-top-read' , 'user-follow-modify', 'user-follow-read'],
-	redirectUri: 'https://webprojects-rqwyg.run.goorm.io/callback/',
+	redirectUri: process.env.URI,
 	clientSecret: process.env.SECRET,
 	clientId: process.env.ID,
 	state: process.env.STATE
 });
 
-console.log(process.env.URI);
 
 // Create the authorization URL
 var authorizeURL = spotifyApi.createAuthorizeURL(spotifyApi._credentials.scopes, spotifyApi._credentials.state);
